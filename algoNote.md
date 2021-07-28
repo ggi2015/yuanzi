@@ -197,9 +197,120 @@ Status ClearList(LinkList *L)
 
 单链表结构与顺序存储结构优缺点  
 
-静态链表  
+静态链表：用数组描述的链表  
+```C
+/*
+*通常把数组建立得大一些，以便有空闲空间便于插入不至于溢出
+*线性表的静态链表存储结构
+*第一个元素和最后一个元素不存数据，第一个游标存备用链表的第一个节点下标，最后一个游标存第一个有数值的元素的下标，相当于单链表中头结点作用;(pic/DS3-12-2.png)
+*/
+#define MAXSIZE 1000 //假设链表最大长度1000
+typedef struct
+{
+   ElemType data;
+   int cur; //游标，为0时表示无指向
+} Component,StaticLinkList[MAXSIZE];
+```  
+
+```C
+/*
+*将一维数组space中各分量链成一备用链表
+*spac[0].cur为头指针，“0”表示空指针
+*/
+Status InitList(StaticLinkList space)
+{
+//TODO
+}
+```  
+
+```C
+/*
+*若备用空间链表非空，则返回分配的结点下标，否则返回0
+*/
+Status Malloc_SLL(StaticLinkList space)
+{
+//TODO
+}
+```   
+
+```C
+/*
+*在L中第i个元素之前插入新的元素e
+*/
+Status ListInsert(StaticLinkList L, int i, ElemType e)
+{
+//TODO
+}
+``` 
+
+```C
+/*
+*删除在L中的第i个数据元素e
+*/
+Status ListDelete(StaticLinkList space, int i)
+{
+//TODO
+}
+```   
+
+```C
+/*
+*将下标为k的空闲结点回收到备用链表
+*/
+Status Free_SSL(StaticLinkList space, int k)
+{
+//TODO
+}
+```   
+
+```C
+/*
+*初始条件：静态链表已存在。操作结果：返回L中数据元素个数
+*/
+Status ListLength(StaticLinkList L)
+{
+//TODO
+}
+```   
+静态链表优缺点  
+
+### 循环链表
+将单链表中终端结点的指针端由空指针改为指向头结点，就使整个单链表形成一个环，这种头尾相接的单链表称为单循环链表，简称循环链表。  
+
+### 双向链表  
+单链表的每个结点中，在设置一个指向其前驱结点的指针域。每个结点两个指针域，一个指向直接后继，另一个指向直接前驱；  
+```C
+/*
+*线性表的双向链表存储结构
+*/
+typedef struct DulNode
+{
+   ElemType data;
+   struct DulNode *prior;  //直接前驱指针
+   struct DulNode *next;   //直接后继指针
+} DulNode, *DuLinkList;
+```  
+
+### 总结  
+|线性表     |          |       |      |       |  
+|----      |----      |----   |----  |----   |
+|顺序存储结构|链式存储结构|       |      |       | 
+|          |单链表     |静态链表|循环链表|双向链表|  
 
 
+## 栈与队列  
+栈：限定仅在表尾进行插入和删除操作的 - 线性表 -  
+队列：只允许在一端进行插入操作、而在另一端进行删除操作的线性表  
+
+### 栈
+栈顶（top）：允许插入删除的一端，另一端：栈底；  
+LIFO  
+3个元素，5种可能的出栈次序；  
+
+```C
+ADT 
+// TODO
+```  
 
 
 
