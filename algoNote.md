@@ -308,10 +308,244 @@ LIFO
 3个元素，5种可能的出栈次序；  
 
 ```C
-ADT 
-// TODO
+ADT Stack
+Data
+    元素具有相同的类型，相邻元素具有前驱和后继关系
+Operation
+   InitStack(*S):初始化操作，建立一个空栈S。
+   DestroyStack(*S):若栈存在，则销毁它。
+   ClearStack(*S):将栈清空。
+   StackEmpty(S):若栈为空，返回true， 否则返回false。
+   GetTop(S, *e):若栈存在且非空，用e返回S的栈顶元素。
+   Push(*S, e):若栈S存在，插入新元素e到栈S中并成为栈顶元素。
+   Pop(*S, *e):删除栈S中栈顶元素，并用e返回其值。
+   StackLength(S):返回栈S的元素个数。
+endADT  
+```    
+#### 栈的顺序存储结构及其实现
+栈空top=-1，栈满top=MAXSIZE-1 
+```C
+/*
+*栈的结构定义
+*/
+typedef int SElemType; //SElemType类型根据实际情况而定，这里假设为int
+typedef struct
+{
+   SElemType data[MAXSIZE];
+   int top; //用于栈顶指针
+}SqStack
 ```  
 
+```C
+/*
+* 进栈操作，插入元素e为新的栈顶元素
+*/
+Status Push(SqStack *S, SElemType e)
+{
+   //TODO
+}
+```
+
+```C
+/*
+* 出栈操作；若栈不为空，则删除S的栈顶元素，用e返回其值，并返回OK；否则返回ERROR
+*/
+Status Pop(SqStack *S, SElemType *e)
+{
+   //TODO
+}
+```
+#### 两栈共享空间  
+```C
+/*
+* 两栈共享空间结构
+*/
+typedef struct
+{
+   SElemType data[MAXSIZE];
+   int top1;   //栈1栈顶指针
+   int top2;   //栈2栈顶指针
+}SqDoubleStack;
+
+//插入元素e为新的栈顶元素
+Status Push(SqDoubleStack *S, SElemType e, int stackNumber)
+{
+   //TODO
+}
+
+//若栈不空，则删除S的栈顶元素，用e返回其值，并返回OK；否则返回ERROR
+Status Pop(SqDoubleStack *S, SElemType *e, int stackNumber)
+{
+   //TODO
+}
+```  
+
+#### 栈的链式存储结构及其实现  
+空栈top=NULL，基本不存在栈满  
+```C
+/*
+*结构代码
+*/
+typedef struct StackNode
+{
+   SElemType data;
+   struct StackNode *next;
+}StackNode, *LinkStackPtr;
+
+typedef struct LinkStack
+{
+   LinkStackPtr top;
+   int count ;
+}LinkStack;
+```  
+
+```C
+/*
+* 进栈操作，插入元素e为新的栈顶元素
+*/
+Status Push(LinkStack *S, SElemType e)
+{
+   //TODO
+}
+```
+
+```C
+/*
+* 出栈操作；若栈不为空，则删除S的栈顶元素，用e返回其值，并返回OK；否则返回ERROR
+*/
+Status Pop(LinkStack *S, SElemType *e)
+{
+   //TODO
+}
+```
+顺序栈/链栈的Push/Pop操作，时间复杂度均为O(1)；  
+栈的使用过程中，元素变化不可预料，时大时小，最好用链栈；反之，变化在可控范围，建议顺序栈；  
+
+#### 栈的应用
+1. 递归  
+斐波那契数列实现：
+定义：把一个直接调用自己或者通过一系列的调用语句间接调用自己的函数，称为递归函数  
+递归函数必须要有终止条件，否则陷入无尽循环
+
+2. 四则运算表达式求值  
+逆波兰表达法：所有运算符都是要在运算数字的后面出现；  
+从左到右遍历表达式，遇到数字进栈，遇到符号，将处于栈顶的两个数字出栈，进行运算，结果入栈，直到最后；  
+
+### 队列
+定义：一端插入，另一端删除的线性表。FIFO  
+```C
+ADT Queue
+Data
+   元素具有相同的类型，相邻元素具有前驱和后继关系。
+Operation
+   InitQueue(*Q);初始化操作，建立一个空队列Q
+   DestroyQueue(*Q):若队列存在，则销毁它
+   ClearQueue(*Q):将对列清空
+   QueueEmpty(Q):若队列Q为空，返回true，否则返回false
+   GetHead(Q, *e):若队列存在且非空，用e返回队列Q的对头元素
+   EnHead(*Q, e):若队列存在，插入新元素e到队列Q中并成为Q的对头元素
+   DeQueue(*Q, *e):删除队列Q中对头元素，并用e返回其值
+   QueueLength(Q):返回队列Q的元素个数
+endADT
+```
+#### 循环队列  
+队列顺序存储不足：对头离开，后面的人都得往前挪一步；引入front和rear指针，假溢出  
+定义：头尾相接的顺序存储结构称为循环队列  
+判满：设置标志位；或者当front与rear相隔一个时，我们就认为满  
+通用的计算队列长度公式：**(rear-front+QueueSize)%QueueSize**  
+```C
+/*
+*循环队列的顺序存储结构
+*/
+typedef int QElemType; //QElemType 类型根据实际情况而定
+typedef struct
+{
+   QElemType data[MAXSIZE];
+   int front;  //头指针
+   int rear;   //尾指针，若对列不为空，指向队列尾元素的下一个位置
+}SqQueue;
+```
+```C
+/*
+*初始化一个空队列Q
+*/
+Status InitQueue(SqQueue *Q)
+{
+   //TODO
+}
+```
+```C
+/*
+*循环队列求队列长度，返回Q的元素个数，也就是队列的当前长度
+*/
+int QueueLength(SqQueue Q)
+{
+   //TODO
+}
+```
+```C
+/*
+*循环队列入队操作，若队列未满，则插入元素e为Q新的队尾元素
+*/
+Status EnQueue(SqQueue *Q， QElemType e)
+{
+   //TODO
+}
+```
+```C
+/*
+*循环队列出队操作，若对列不为空，则删除Q中对头元素，用e返回其值
+*/
+Status DeQueue(SqQueue *Q, QElemType *e)
+{
+   //TODO
+}
+```
+
+#### 队列的链式存储结构及其实现  
+队列的链式存储结构，其实就是线性表的单链表，只不过只能尾进头出，简称链队列  
+```C
+/*
+*链队列结构
+*/
+typedef int QElemType;  //QElemType类型根据实际情况而定，这里假设为int
+typedef struct QNode //结点结构
+{
+   QElemType data;
+   struct QNode  *next;
+}QNode, *QueuePtr;
+typedef struct //队列的链表结构
+{
+   QueuePtr front, rear;   //对头、队尾指针
+}LinkQueue;
+```
+```C
+/*
+*队列链式存储的入队操作，插入元素e为Q新的队尾元素
+*/
+Status EnQueue(LinkQueue *Q， QElemType e)
+{
+   //TODO
+}
+```
+```C
+/*
+*队列链式存储的出队操作，若对列不为空，则删除Q中对头元素，用e返回其值，并返回OK，否则返回ERROR
+*/
+Status DeQueue(SqQueue *Q, QElemType *e)
+{
+   //TODO
+}
+```
+循环队列与链队列基本操作都是时间常数，都为O(1);循环队列是事先申请好空间，使用期间不释放，链队列，每次申请 和释放结点存在时间开销；故若出入队频繁，两者还是有区别；但链队列无空间浪费一说；  
+在队列长度最大值确定的情况下，建议循环队列；无法预估队列长度，链队列  
+
+### 总结回顾
+|栈  |队列  |
+|--- |---  |
+|顺序栈|顺序队列|
+|- 两栈共享空间|- 循环队列|
+|链栈 |链队列|
 
 
 
